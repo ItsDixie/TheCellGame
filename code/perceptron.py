@@ -1,6 +1,6 @@
 import numpy as np
 import cells
-from random import randint
+from random import randint, choice
 def run(q):
     size_list = q[0]
     ROWS, COLS = size_list[0]-1, size_list[1]-1
@@ -45,6 +45,7 @@ def run(q):
         
         def evaluate_fitness(self, perceptron, input_data):
             output = perceptron.feedforward(input_data)
+            
             fitness = 1 # переделать под прогноз получаемой энергии и траты хп. Энергия растет при поедании и фотосинтезе. Хп падает при поедании кем-то другим
             return fitness
         
@@ -92,15 +93,15 @@ def run(q):
             return best_perceptron
 
     # Пример входных данных и целевого вывода
-    num_inputs = 5
-    num_hidden_layers = 6
+    num_inputs = 4
+    num_hidden_layers = 2
     num_neurons_per_layer = 5
     num_outputs = 5
 
     population_size = 30
     num_generations = 1
     mutation_rate = 0.1
-    inputs = [0.8, 0.2, 0.4] # переделать под состояние клетки
+    inputs = [0.8, 0.2, 0.4, 0.2] # переделать под состояние клетки
     # индекс 0 - текущая энергия, индекс 1 - что видит клетка, 
     # индекс 2 - клетка на которую повернута, родственик? (0 - нет, 1 - да) индекс 3 -  направление клетки (ход по 0.125, 0 - значит на месте 
      
@@ -117,7 +118,7 @@ def run(q):
     
     for i in range(cells_amount):
         best_perceptron = ga.evolve(inputs)
-        alive_cell = cells.cell(base_energy, (randint(0, ROWS), randint(0, COLS)), 1, best_perceptron, alive_cells, ROWS, COLS)
+        alive_cell = cells.cell(base_energy, (randint(0, ROWS), randint(0, COLS)), choice([0.125, 0.25, 0.375, 0.5, 0.625, 0.75, 0.875, 1.0]), best_perceptron, alive_cells, ROWS, COLS)
         alive_cells[f"cell{i}"] = alive_cell
     give_cells()
 
