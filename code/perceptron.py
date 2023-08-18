@@ -100,14 +100,14 @@ def run(q):
     population_size = 30
     num_generations = 1
     mutation_rate = 0.1
-    inputs = [0.8, 0.2, 0.4, 0.6, 0.1] # переделать под состояние клетки
+    inputs = [0.8, 0.2, 0.4] # переделать под состояние клетки
     # индекс 0 - текущая энергия, индекс 1 - что видит клетка, 
     # индекс 2 - клетка на которую повернута, родственик? (0 - нет, 1 - да) индекс 3 -  направление клетки (ход по 0.125, 0 - значит на месте 
-    # индекс 4 - высота клетки 
+     
 
-    base_hp, base_energy = 1, 1
+    base_energy = 1
     cells_amount = 10
-    alive_cells = []
+    alive_cells = {}
     # Создание и выполнение генетического алгоритма
     ga = GeneticAlgorithm(population_size, num_generations, mutation_rate, num_inputs, num_hidden_layers, num_neurons_per_layer, num_outputs)
     
@@ -117,12 +117,8 @@ def run(q):
     
     for i in range(cells_amount):
         best_perceptron = ga.evolve(inputs)
-        output = best_perceptron.feedforward(inputs)
-        alive_cell = cells.cell(base_hp, base_energy, (randint(0, ROWS), randint(0, COLS)), 1, output)
-        alive_cells.append(alive_cell)
+        alive_cell = cells.cell(base_energy, (randint(0, ROWS), randint(0, COLS)), 1, best_perceptron, alive_cells, ROWS, COLS)
+        alive_cells[f"cell{i}"] = alive_cell
     give_cells()
 
 
-    # [1, 0, 0, 0, 0] - пример
-    #  индекс 0 - движение по направлению, индекс 1 - сменить направление по часовой стрелке (вперед-диагональ-направо)
-    #  индекс 2 - фотосинтезировать энергию, индекс 3 - размножение, индекс 4 - кушать клетку по направлению
