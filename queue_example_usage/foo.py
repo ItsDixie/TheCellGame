@@ -1,4 +1,4 @@
 def run(q):
-    string = q.get()
+    string = q[1]
     print(string)
-    print(q.get())
+    

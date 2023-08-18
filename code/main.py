@@ -1,12 +1,15 @@
 import threading
-import queue
-
+from collections import deque
+from time import sleep
 import graphics
 import cells
 import perceptron
 
-threading.Thread(target=graphics.run, name='GraphicsRender').start()
-threading.Thread(target=perceptron.run, name='PerceptroneCalc').start()
-#threading.Thread(target=cells.run, name='GraphicsRender').start()
-queue = queue.Queue
+q = deque()
 #queue.put(var) - добавить переменную
+
+threading.Thread(target=graphics.run, name='GraphicsRender', args=(q,)).start()
+sleep(1)
+threading.Thread(target=perceptron.run, name='PerceptroneCalc', args=(q,)).start()
+#threading.Thread(target=cells.run, name='GraphicsRender').start()
+

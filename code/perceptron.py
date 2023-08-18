@@ -1,6 +1,9 @@
 import numpy as np
-import threading
-def run():
+import cells
+from random import randint
+def run(q):
+    size_list = q[0]
+    ROWS, COLS = size_list[0]-1, size_list[1]-1
     class Perceptron:
         def __init__(self, num_inputs, num_hidden_layers, num_neurons_per_layer, num_outputs):
             self.weights = []
@@ -94,23 +97,32 @@ def run():
     num_neurons_per_layer = 5
     num_outputs = 5
 
-    population_size = 50
-    num_generations = 100
+    population_size = 30
+    num_generations = 1
     mutation_rate = 0.1
     inputs = [0.8, 0.2, 0.4, 0.6, 0.1] # переделать под состояние клетки
     # индекс 0 - текущая энергия, индекс 1 - что видит клетка, 
     # индекс 2 - клетка на которую повернута, родственик? (0 - нет, 1 - да) индекс 3 -  направление клетки (ход по 0.125, 0 - значит на месте 
     # индекс 4 - высота клетки 
 
-
-
+    base_hp, base_energy = 1, 1
+    cells_amount = 10
+    alive_cells = []
     # Создание и выполнение генетического алгоритма
     ga = GeneticAlgorithm(population_size, num_generations, mutation_rate, num_inputs, num_hidden_layers, num_neurons_per_layer, num_outputs)
-    best_perceptron = ga.evolve(inputs)
-
-    # Получение и вывод лучшего перцептрона 
-    output = best_perceptron.feedforward(inputs)
     
+    def give_cells():
+        q.append(alive_cells)
+        print(q)
+    
+    for i in range(cells_amount):
+        best_perceptron = ga.evolve(inputs)
+        output = best_perceptron.feedforward(inputs)
+        alive_cell = cells.cell(base_hp, base_energy, (randint(0, ROWS), randint(0, COLS)), 1, output)
+        alive_cells.append(alive_cell)
+    give_cells()
+
+
     # [1, 0, 0, 0, 0] - пример
     #  индекс 0 - движение по направлению, индекс 1 - сменить направление по часовой стрелке (вперед-диагональ-направо)
     #  индекс 2 - фотосинтезировать энергию, индекс 3 - размножение, индекс 4 - кушать клетку по направлению

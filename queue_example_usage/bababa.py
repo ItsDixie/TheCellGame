@@ -1,2 +1,2 @@
 def run(q):
-    q.put({'test' : 123})
+    q.append({'test' : 123})
