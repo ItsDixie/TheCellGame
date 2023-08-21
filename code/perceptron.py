@@ -4,6 +4,8 @@ from random import randint, choice
 def run(q):
     size_list = q[0]
     ROWS, COLS = size_list[0]-1, size_list[1]-1
+    q.pop()
+    print(q)
     class Perceptron:
         def __init__(self, num_inputs, num_hidden_layers, num_neurons_per_layer, num_outputs):
             self.weights = []
@@ -45,8 +47,10 @@ def run(q):
         
         def evaluate_fitness(self, perceptron, input_data):
             output = perceptron.feedforward(input_data)
-            
-            fitness = 1 # переделать под прогноз получаемой энергии и траты хп. Энергия растет при поедании и фотосинтезе. Хп падает при поедании кем-то другим
+            fitness = 1
+            if(output[3] == 1):
+                fitness *= 20
+             # переделать под прогноз получаемой энергии и траты хп. Энергия растет при поедании и фотосинтезе. Хп падает при поедании кем-то другим
             return fitness
         
         def select_parents(self, population, input_data):
@@ -89,7 +93,7 @@ def run(q):
                     child = self.mutate(child)
                     new_population.extend([parent1, parent2, child])
                 population = new_population
-            best_perceptron = max(population, key=lambda p: self.evaluate_fitness(p, input_data, ))
+            best_perceptron = max(population, key=lambda p: self.evaluate_fitness(p, input_data))
             return best_perceptron
 
     # Пример входных данных и целевого вывода
@@ -98,23 +102,22 @@ def run(q):
     num_neurons_per_layer = 5
     num_outputs = 5
 
-    population_size = 30
-    num_generations = 1
-    mutation_rate = 0.1
-    inputs = [0.8, 0.2, 0.4, 0.2] # переделать под состояние клетки
+    population_size = 10
+    num_generations = 5
+    mutation_rate = 0.1 
     # индекс 0 - текущая энергия, индекс 1 - что видит клетка, 
     # индекс 2 - клетка на которую повернута, родственик? (0 - нет, 1 - да) индекс 3 -  направление клетки (ход по 0.125, 0 - значит на месте 
      
 
     base_energy = 1
-    cells_amount = 10
+    cells_amount = 100
     alive_cells = {}
     # Создание и выполнение генетического алгоритма
     ga = GeneticAlgorithm(population_size, num_generations, mutation_rate, num_inputs, num_hidden_layers, num_neurons_per_layer, num_outputs)
     
     def give_cells():
         q.append(alive_cells)
-        print(q)
+        
     
     for i in range(cells_amount):
         alive_cell = cells.cell(base_energy, (randint(0, ROWS), randint(0, COLS)), choice([0.125, 0.25, 0.375, 0.5, 0.625, 0.75, 0.875, 1.0]))

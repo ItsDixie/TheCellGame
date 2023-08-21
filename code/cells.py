@@ -1,3 +1,4 @@
+from random import randint
 
 class cell:
     CELLS = {}
@@ -113,18 +114,33 @@ class cell:
             self.dir += 0.125
         else:
             self.dir = 0.125
+
     def multiply(self):
         x,y = self.pos
-        if(self.energy >= 10):
-            self.energy -= 10
-            ox, oy = self.calc_move(x, y)
-            return [ox, oy, self.brain] # позиция для новой клетки
+        ox, oy = self.calc_move(x, y)
+        if(ox > self.ROWS):
+            ox = self.ROWS
+        elif(ox < 0):
+            pass
+        
+        if(oy > self.COLS):
+            oy = self.COLS
+        elif(oy < 0):
+            pass
+        if self.energy == 1 and all((ox, oy) != cell.pos for cell in self.CELLS.values()):
+            #self.energy /= 2
+            new_cell = cell(self.energy, (ox, oy), self.dir)
+            new_cell.insert_brain(self.brain)
+            self.CELLS[f'{randint(0, 10000)}'] = new_cell # позиция для новой клетки
+            print(f"new cell at {(ox, oy)}")
+            self.update_dict()
+        
     def eat(self):
         pass
     def photosintez(self):
-        pass
+        if not(self.energy ==  1.0): self.energy += 0.5
 
     def update_dict(self):
-        self.DEQUEUE.pop(1)
+        self.DEQUEUE.pop()
         self.DEQUEUE.append(self.CELLS)
         
