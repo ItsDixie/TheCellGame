@@ -1,9 +1,9 @@
 
 class cell:
-    def __init__(self, energy, pos, direction, perceptron, alive_cells, rows, cols):
+    def __init__(self, energy, pos, direction, alive_cells, rows, cols):
         self.energy = energy
         self.pos = pos
-        self.brain = perceptron
+        #self.brain = perceptron
         self.dir = direction # от 1 до 8, клетки вокруг бота
         
         
@@ -11,6 +11,9 @@ class cell:
         self.rows = rows
         self.cols = cols
         
+    def insert_brain(self, perceptron):
+        self.brain = perceptron
+
     def think(self):
         target = self.looking(False)
         simmilar = self.looking(True)
