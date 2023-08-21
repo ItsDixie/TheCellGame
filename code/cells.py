@@ -1,16 +1,23 @@
 
 class cell:
-    def __init__(self, energy, pos, direction, alive_cells, rows, cols):
+    CELLS = {}
+    ROWS = 0
+    COLS = 0
+    DEQUEUE = []
+
+    def __init__(self, energy, pos, direction):
         self.energy = energy
         self.pos = pos
         #self.brain = perceptron
         self.dir = direction # от 1 до 8, клетки вокруг бота
         
-        
-        self.cells = alive_cells
-        self.rows = rows
-        self.cols = cols
-        
+    
+    def update_constants(self, alive_cells, rows, cols, dequeue):
+        self.CELLS = alive_cells
+        self.ROWS = rows
+        self.COLS = cols
+        self.DEQUEUE = dequeue
+
     def insert_brain(self, perceptron):
         self.brain = perceptron
 
@@ -65,23 +72,23 @@ class cell:
 
         ox, oy = self.calc_move(x, y)
 
-        if(ox > self.rows):
-            ox = self.rows
+        if(ox > self.ROWS):
+            ox = self.ROWS
             return 0.5
         elif(ox < 0):
             ox = 0
             return 0.5
         
-        if(oy > self.cols):
-            oy = self.cols
+        if(oy > self.COLS):
+            oy = self.COLS
             return 0.5
         elif(oy < 0):
             oy = 0
             return 0.5
         
-        if((ox,oy) in self.cells):
+        if((ox,oy) in self.CELLS):
             if(looking_for_simmilar):
-                return int(any(cell.brain == self.brain for cell in self.cells.values()))
+                return int(any(cell.brain == self.brain for cell in self.CELLS.values()))
         else:
             return 0
         
@@ -89,13 +96,13 @@ class cell:
         x,y = self.pos
         ox, oy = self.calc_move(x, y)
 
-        if(ox > self.rows):
-            ox = self.rows
+        if(ox > self.ROWS):
+            ox = self.ROWS
         elif(ox < 0):
             ox = 0
         
-        if(oy > self.cols):
-            oy = self.cols
+        if(oy > self.COLS):
+            oy = self.COLS
         elif(oy < 0):
             oy = 0
             
@@ -116,4 +123,8 @@ class cell:
         pass
     def photosintez(self):
         pass
+
+    def update_dict(self):
+        self.DEQUEUE.pop(1)
+        self.DEQUEUE.append(self.CELLS)
         
