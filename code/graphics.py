@@ -50,7 +50,7 @@ def run(q):
     #WINDOW_SIZE = (CELL_SIZE * COLS, CELL_SIZE * ROWS)
     WINDOW_SIZE = (1920, 1000)
     clock = pygame.time.Clock()
-    FPS = 30
+    FPS = 5
 
     alive_cells = {}
     q.append([ROWS, COLS])
