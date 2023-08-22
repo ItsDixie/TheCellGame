@@ -120,7 +120,8 @@ def run(q):
         
     
     for i in range(cells_amount):
-        alive_cell = cells.cell(base_energy, (randint(0, ROWS), randint(0, COLS)), choice([0.125, 0.25, 0.375, 0.5, 0.625, 0.75, 0.875, 1.0]))
+        color = (randint(0, 255), randint(0, 255), randint(0, 255))
+        alive_cell = cells.cell(base_energy, (randint(0, ROWS), randint(0, COLS)), choice([0.125, 0.25, 0.375, 0.5, 0.625, 0.75, 0.875, 1.0]), color)
         alive_cell.update_constants(alive_cells, ROWS, COLS, q)
         inputs = alive_cell.get_inputs()
         best_perceptron = ga.evolve(inputs)

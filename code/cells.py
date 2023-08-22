@@ -6,11 +6,12 @@ class cell:
     COLS = 0
     DEQUEUE = []
 
-    def __init__(self, energy, pos, direction):
+    def __init__(self, energy, pos, direction, color):
         self.energy = energy
         self.pos = pos
         #self.brain = perceptron
         self.dir = direction # от 1 до 8, клетки вокруг бота
+        self.color = color
         
     
     def update_constants(self, alive_cells, rows, cols, dequeue):
@@ -132,7 +133,7 @@ class cell:
             pass
         if self.energy == 1 and all((ox, oy) != cell.pos for cell in self.CELLS.values()):
             #self.energy /= 2
-            new_cell = cell(self.energy, (ox, oy), self.dir)
+            new_cell = cell(self.energy, (ox, oy), self.dir, self.color)
             new_cell.insert_brain(self.brain)
             self.CELLS[f'{randint(0, 10000)}'] = new_cell # позиция для новой клетки
             print(f"new cell at {(ox, oy)}")

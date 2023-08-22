@@ -112,7 +112,7 @@ def run(q):
                 for cell in alive_cells.keys():
                     alive_cells[cell].think()
                     x, y = alive_cells[cell].pos
-                    draw_filled_circle(x, y, 5, (255,0,0))
+                    draw_filled_circle(x, y, 5, alive_cells[cell].color)
             except Exception as e: pass
             def get_pos():
                 x, y = pygame.mouse.get_pos()
