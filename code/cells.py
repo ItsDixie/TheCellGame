@@ -9,8 +9,7 @@ class cell:
     def __init__(self, energy, pos, direction, color):
         self.energy = energy
         self.pos = pos
-        #self.brain = perceptron
-        self.dir = direction # от 1 до 8, клетки вокруг бота
+        self.dir = direction # клетки вокруг бота
         self.color = color
         
     
@@ -24,6 +23,13 @@ class cell:
         self.brain = perceptron
 
     def think(self):
+        key = list(self.CELLS.keys())[list(self.CELLS.values()).index(self)]
+
+        self.energy -= 0.1
+        if(self.energy > 1.0):
+            self.energy = 1.0
+        if(self.CELLS[key].energy <= 0.0):
+            self.CELLS.pop(key)
         target = self.looking(False)
         simmilar = self.looking(True)
         inputs = [self.energy, target, simmilar, self.dir]
@@ -67,8 +73,8 @@ class cell:
             ox,oy = x-1,y
         if(self.dir == 1.0):
             ox,oy = x-1,y+1
-
-        return ox,oy
+        return ox, oy
+    
     def looking(self, looking_for_simmilar): # 0 если пустая клетка, 0,5 если край карты, 1 если с ботом
         x,y = self.pos
 
@@ -125,12 +131,14 @@ class cell:
         if(ox > self.ROWS):
             ox = self.ROWS
         elif(ox < 0):
-            pass
+            ox = 0
         
         if(oy > self.COLS):
             oy = self.COLS
         elif(oy < 0):
-            pass
+            oy = 0
+        if(ox == 0 or oy == 0):
+            return 'nuh uh'
         if self.energy == 1 and all((ox, oy) != cell.pos for cell in self.CELLS.values()):
             #self.energy /= 2
             new_cell = cell(self.energy, (ox, oy), self.dir, self.color)

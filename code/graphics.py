@@ -50,7 +50,7 @@ def run(q):
     #WINDOW_SIZE = (CELL_SIZE * COLS, CELL_SIZE * ROWS)
     WINDOW_SIZE = (1920, 1000)
     clock = pygame.time.Clock()
-    FPS = 5
+    FPS = 30
 
     alive_cells = {}
     q.append([ROWS, COLS])
@@ -118,7 +118,9 @@ def run(q):
                 x, y = pygame.mouse.get_pos()
                 cell_x = x // CELL_SIZE
                 cell_y = y // CELL_SIZE
-                print(f"Clicked cell at ({cell_x}, {cell_y})")
+                for cell in alive_cells.keys():
+                    if(alive_cells[cell].pos == (cell_x, cell_y)):
+                        print(f"{alive_cells[cell].pos}, {alive_cells[cell].brain.num_layers}, {alive_cells[cell].color}")
 
             input_field.draw(screen)
             button.draw(screen)

@@ -50,6 +50,10 @@ def run(q):
             fitness = 1
             if(output[3] == 1):
                 fitness *= 20
+            if(output[2] == 1):
+                fitness *= 2
+            if(output[0] == 1):
+                fitness += 10
              # переделать под прогноз получаемой энергии и траты хп. Энергия растет при поедании и фотосинтезе. Хп падает при поедании кем-то другим
             return fitness
         
@@ -110,7 +114,7 @@ def run(q):
      
 
     base_energy = 1
-    cells_amount = 100
+    cells_amount = 50
     alive_cells = {}
     # Создание и выполнение генетического алгоритма
     ga = GeneticAlgorithm(population_size, num_generations, mutation_rate, num_inputs, num_hidden_layers, num_neurons_per_layer, num_outputs)
