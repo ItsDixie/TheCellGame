@@ -107,7 +107,10 @@ class cell:
         elif(oy < 0):
             oy = 0
             
-        return ox, oy
+        # found by value, because keys random generated
+        key = list(self.CELLS.keys())[list(self.CELLS.values()).index(self)]
+        self.CELLS[key].pos = (ox, oy)
+        self.update_dict()
 
     def rotate(self):
         if(self.dir != 1.0):
