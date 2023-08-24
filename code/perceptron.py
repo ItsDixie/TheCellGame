@@ -114,7 +114,7 @@ def run(q):
      
 
     base_energy = 1
-    cells_amount = 50
+    cells_amount = 300
     alive_cells = {}
     # Создание и выполнение генетического алгоритма
     ga = GeneticAlgorithm(population_size, num_generations, mutation_rate, num_inputs, num_hidden_layers, num_neurons_per_layer, num_outputs)
@@ -122,10 +122,10 @@ def run(q):
     def give_cells():
         q.append(alive_cells)
         
-    
+    # могу сделать цикл вайл тру для работы с функциями через декью
     for i in range(cells_amount):
         color = (randint(0, 255), randint(0, 255), randint(0, 255))
-        alive_cell = cells.cell(base_energy, (randint(0, ROWS), randint(0, COLS)), choice([0.125, 0.25, 0.375, 0.5, 0.625, 0.75, 0.875, 1.0]), color)
+        alive_cell = cells.cell(base_energy, (randint(0, ROWS), randint(0, COLS)), choice([0.125, 0.25, 0.375, 0.5, 0.625, 0.75, 0.875, 1.0]), color, 0)
         alive_cell.update_constants(alive_cells, ROWS, COLS, q)
         inputs = alive_cell.get_inputs()
         best_perceptron = ga.evolve(inputs)

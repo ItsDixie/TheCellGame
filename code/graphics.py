@@ -46,11 +46,11 @@ def run(q):
 
     CELL_SIZE = 10
     ROWS = 100
-    COLS = 100
+    COLS = 150
     #WINDOW_SIZE = (CELL_SIZE * COLS, CELL_SIZE * ROWS)
     WINDOW_SIZE = (1920, 1000)
     clock = pygame.time.Clock()
-    FPS = 30
+    FPS = 5
 
     alive_cells = {}
     q.append([ROWS, COLS])
@@ -78,6 +78,9 @@ def run(q):
     running = True
 
     while running:
+        try:
+            alive_cells = q[0]
+        except Exception: pass
         clock.tick(FPS)
     
         for event in pygame.event.get():
@@ -99,10 +102,6 @@ def run(q):
         screen.fill((16, 24, 32))
 
         if not paused:
-
-            try:
-                alive_cells = q[0]
-            except Exception: pass
             
             if writeCells:
                 for row in range(ROWS):
@@ -110,9 +109,9 @@ def run(q):
                         pygame.draw.rect(screen, (100,100,100), (col * CELL_SIZE, row * CELL_SIZE, CELL_SIZE, CELL_SIZE), 1)
             try:
                 for cell in alive_cells.keys():
-                    alive_cells[cell].think()
                     x, y = alive_cells[cell].pos
                     draw_filled_circle(x, y, 5, alive_cells[cell].color)
+                    alive_cells[cell].think()
             except Exception as e: pass
             def get_pos():
                 x, y = pygame.mouse.get_pos()

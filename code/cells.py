@@ -6,11 +6,12 @@ class cell:
     COLS = 0
     DEQUEUE = []
 
-    def __init__(self, energy, pos, direction, color):
+    def __init__(self, energy, pos, direction, color, age):
         self.energy = energy
         self.pos = pos
         self.dir = direction # клетки вокруг бота
         self.color = color
+        self.age = age
         
     
     def update_constants(self, alive_cells, rows, cols, dequeue):
@@ -24,12 +25,13 @@ class cell:
 
     def think(self):
         key = list(self.CELLS.keys())[list(self.CELLS.values()).index(self)]
-
+        self.age += 1
         self.energy -= 0.1
         if(self.energy > 1.0):
             self.energy = 1.0
-        if(self.CELLS[key].energy <= 0.0):
+        if(self.CELLS[key].energy <= 0.0 or self.age >= 90):
             self.CELLS.pop(key)
+            return "CELL DIED, THE END"
         target = self.looking(False)
         simmilar = self.looking(True)
         inputs = [self.energy, target, simmilar, self.dir]
@@ -139,16 +141,19 @@ class cell:
             oy = 0
         if(ox == 0 or oy == 0):
             return 'nuh uh'
-        if self.energy == 1 and all((ox, oy) != cell.pos for cell in self.CELLS.values()):
+        if all((ox, oy) != cell.pos for cell in self.CELLS.values()):
             #self.energy /= 2
-            new_cell = cell(self.energy, (ox, oy), self.dir, self.color)
+            new_cell = cell(self.energy, (ox, oy), self.dir, self.color, 0)
             new_cell.insert_brain(self.brain)
             self.CELLS[f'{randint(0, 10000)}'] = new_cell # позиция для новой клетки
             print(f"new cell at {(ox, oy)}")
             self.update_dict()
         
     def eat(self):
-        pass
+        x, y = self.pos
+        ox, oy = self.calc_move(x, y)
+        if all((ox, oy) != cell.pos for cell in self.CELLS.values()):
+               pass # made it later
     def photosintez(self):
         if not(self.energy ==  1.0): self.energy += 0.5
 
